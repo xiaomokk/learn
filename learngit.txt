@@ -30,4 +30,9 @@ git push -u origin master #把当前分支master推送到远程
 	#第一次推送分支时，-u参数不但推送，而且将本地的分支和远程的分支关联起来
 git clone git@github.com:username/repostery.git #从远程库克隆一个到本地库
 	#git支持多种协议，包括https，但通过试试支持原生git协议速度最快
-	
+分支
+git checkout -b dev #创建并切换分支
+	#相当于git branch dev 和git checkout dev 
+git branch #查看当前分支，当前分支前有个*号
+
+
