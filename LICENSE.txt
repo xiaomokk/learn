@@ -1,0 +1,20 @@
+git config --global user.name 'xxx'
+git config --global user.email 'xxx'
+
+git init
+git add <hello.txt>  # 把文件修改添加到暂存区
+git commit -m 'add a file' # 把暂存区的所有内容提交到当前分支
+git status #掌握工作区状态
+git diff #查看文件修改内容
+git log #查看提交历史
+	git log --pretty=oneline
+git reset --hard HEAD^ #回退到上一个版本
+	HEAD^^(上上版本),HEAD~100(往上100个版本)
+	commit id(版本号) 可回到指定版本
+git reflog #查看历史命令
+工作区（Working Directory）
+版本库（Repository） #.git
+	stage(index) 暂存区
+	master Git自动创建的分支
+	HEAD 指针
+
