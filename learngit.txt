@@ -1,0 +1,25 @@
+git config --global user.name 'xxx'
+git config --global user.email 'xxx'
+
+git init
+git add <hello.txt>  # 把所有要提交的文件修改放到暂存区
+git commit -m 'add a file' # 把暂存区的所有内容提交到当前分支
+git status #掌握工作区状态
+git diff #查看文件修改内容
+git log #查看提交历史
+	git log --pretty=oneline
+git reset --hard HEAD^ #回退到上一个版本
+	HEAD^^(上上版本),HEAD~100(往上100个版本)
+	commit id(版本号) 可回到指定版本
+git reflog #查看历史命令
+工作区（Working Directory）
+版本库（Repository） #.git
+	stage(index) 暂存区
+	master Git自动创建的分支
+	HEAD 指针
+git diff HEAD -- <file> #查看工作区和版本库里最新版本的区别
+git checkout -- <file> #用版本库的版本替换工作区的版本，无论是工作区的修改还是删除，都可以'一键还原'
+	#丢弃工作区的修改（让文件回到最近一次的git commit或git add时的状态）
+git reset HEAD <file> #把暂存区的修改撤销掉，重新放回工作区。
+git rm <file> #删除文件，若文件已提交到版本库，不用担心误删，但是只能恢复文件到最新版本
+
