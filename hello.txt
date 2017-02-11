@@ -4,3 +4,4 @@ Git has a mutable index called stage.
 Git tracks changes of files.
 git log --graph #查看分支合并图
 
+修复bug
