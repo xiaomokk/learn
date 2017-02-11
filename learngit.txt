@@ -23,3 +23,10 @@ git checkout -- <file> #用版本库的版本替换工作区的版本，无论�
 git reset HEAD <file> #把暂存区的修改撤销掉，重新放回工作区。
 git rm <file> #删除文件，若文件已提交到版本库，不用担心误删，但是只能恢复文件到最新版本
 
+ssh-keygen -t rsa -C 'user@example.com' #创建SSH Key
+git remote add origin git@github.com:username/repostery.git #关联本地仓库，远程库的名字为origin
+	#第一次使用Git的clone或者push命令连接GitHub时需确认
+git push -u origin master #把当前分支master推送到远程
+	#第一次推送分支时，-u参数不但推送，而且将本地的分支和远程的分支关联起来
+
+
