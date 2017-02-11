@@ -17,5 +17,7 @@ git reflog #查看历史命令
 	stage(index) 暂存区
 	master Git自动创建的分支
 	HEAD 指针
-Greating a new branch is quick & simple.
+
+Greating a new branch is quick and simple.
+
 
