@@ -53,6 +53,9 @@ git branch -D <name> #强行删除某个未合并的分支
 git remote #查看远程仓库
 git remote -v #查看远程库详细信息
 
+git pull #抓取远程提交
+git checkout -b branch-name origin/branch-name #在本地创建和远程分支对应的分支
+git branch --set-upstream branch-nam origin/branch-name #建立本地分支和远程分支的关联
 
 
 
