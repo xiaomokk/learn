@@ -3,4 +3,5 @@ Git is free software distributed under the GPL.
 Git has a mutable index called stage.
 Git tracks changes of files.
 git log --graph #查看分支合并图
+dev里的修改还没完成，无法提交
 
