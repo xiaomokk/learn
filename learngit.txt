@@ -74,4 +74,34 @@ git push origin --tags #推送所有尚未推送的本地标签
 git config --global color.ui true
 编写.gitignore文件来忽略某些文件，此文件本身要放到版本库内，并可对其做版本管理
 git add -f hello.pyc #-f参数强制添加到Git
-git check-ignore　＃检查.gitignore文件的规则
+git check-ignore -v hello.pyc　＃检查.gitignore文件的规则
+简写命令
+git config --global alias.co checkout #简写checkout命令
+git config --global alias.st status
+git config --global alias.ci commit
+git config --global alias.br branch
+git config --global alias.unstage 'reset HEAD' #撤销暂存区的修改
+git config --global alias.last 'log -1' #查看最近一次的提交
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+配置文件
+--global参数时针对当前用户起作用，如果不加，仅针对当前仓库起作用
+每个仓库的Git配置文件在 .git/config 文件中
+当前用户的Git配置文件在用户主目录下的 .gitconfig 文件中
+
+搭建Git服务器
+1、安装git sudo apt install git
+2、创建git用户 sudo adduser git
+3、创建证书登录，将所有需要登录的用户的公钥导入到/home/git/.ssh/authorized_keys文件，每行一个
+4、初始化Git仓库
+	在仓库目录下输入命令 sudo git init --bare sample.git 创建裸仓库（没有工作区）
+	把owner改为git sudo chown -R git:git sample.git
+5、禁用shell登录，修改/etc/passwd文件
+	git:x:1001:1001:,,,:/home/git:/bin/bash
+	改为：
+	git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
+
+6、克隆远程仓库
+git clone git@server:/srv/sample.git
+
+
+
