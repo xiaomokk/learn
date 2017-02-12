@@ -70,7 +70,8 @@ git push origin --tags #推送所有尚未推送的本地标签
 删除远程标签  git tag -d v0.2 #先删除本地标签
 			 git push origin :refs/tags/v0.2 #删除远程标签
 
-
-
-
-
+自定义git
+git config --global color.ui true
+编写.gitignore文件来忽略某些文件，此文件本身要放到版本库内，并可对其做版本管理
+git add -f hello.pyc #-f参数强制添加到Git
+git check-ignore　＃检查.gitignore文件的规则
