@@ -41,7 +41,7 @@ git merge <name> #合并某个分支到当前分支
 git branch -d <name> #删除分支
 git log --graph #查看分支合并图
 git merge --no-ff -m 'message' dev #禁用Fast forward合并dev分支
-	#本次合并要创建心得commit，所以要加上-m参数，把commit描述写进去
+	#本次合并要创建新的commit，所以要加上-m参数，把commit描述写进去
 	#Fast forward合并不可查看合并记录
 git stash #隐藏当前工作现场，等恢复后继续工作
 git stash list #
@@ -56,6 +56,19 @@ git remote -v #查看远程库详细信息
 git pull #抓取远程提交
 git checkout -b branch-name origin/branch-name #在本地创建和远程分支对应的分支
 git branch --set-upstream branch-nam origin/branch-name #建立本地分支和远程分支的关联
+
+标签
+git tag v1.0 #给当前分支最新的commit打标签
+git tag v0.9 36df530 #给历史提交的commit打标签
+git tag -a v0.1 -m 'version 0.1 released' 3628164 #-a指定标签名，-m指定说明文字
+git tag -s <tagname> -m 'blabla' #可以用PGP签名标签
+git tag #查看所有标签
+git show v1.0 #查看标签信息
+git tag -d v0.1 #删除标签
+git push origin <tagname> #推送某个标签到远程
+git push origin --tags #推送所有尚未推送的本地标签
+删除远程标签  git tag -d v0.2 #先删除本地标签
+			 git push origin :refs/tags/v0.2 #删除远程标签
 
 
 
