@@ -1,0 +1,243 @@
+1、术语
+数据库 database
+数据管理系统 DBMS
+表 table
+列 column
+行 row
+主键 primary key
+SQL Structured Query Language
+关键字 keyword
+子句 clause
+操作符 operator
+通配符 wildcard
+搜索模式 search pattern
+字段 field
+可移植 portable
+聚合函数 aggregate function
+查询 query
+可伸缩 scale
+事务 transaction
+回退 rollback
+提交 commit
+保留点 savepoint
+游标 cursor
+
+
+2、语句(for mysql)
+2.1 SELECT语句
+SELECT column_name1, column_name2 FROM table_name; --检索多个列
+--通配符 *
+SELECT DISTINCT column_name FROM table_name; --返回该列不同的值
+SELECT column_name FROM table_name LIMIT 5 OFFSET 2; --检索从第2行开始的5行数据（初始行为0）
+SELECT column_name FROM table_name LIMIT 2, 5; --上一个语句的简写
+# 此行为注释，多行注释使用 /*...*/
+SELECT column_name1, column_name2 FROM table_name ORDER BY column_name1; --以column_name1列排序，ORDER BY子句必须是SELECT语句的最后一个子句
+SELECT column_name1, column_name2, column_name3 FROM table_name ORDER BY column_name1, column_name2; --以多个列排序
+SELECT column_name1, column_name2, column_name3 FROM table_name ORDER BY 1, 2; --上一个语句的简写
+SELECT column_name1, column_name2 FROM table_name ORDER BY column_name1 DESC; --使用DESC（descending)关键字表明以column_name1的倒序排序
+SELECT column_name1, column_name2 FROM table_name WHERE column_name1 = 2; --WHERE子句放在FROM子句后对搜索条件进行过滤
+# WHERE子句操作符 =, !=, <, >, <=, >=, BETWEEN, IS NULL
+SELECT column_name1, column_name2 FROM table_name WHERE column_name1 BETWEEN 2 AND 5; --BETWEEN用例
+# AND操作符和OR操作符结合WHERE子句可进行复杂数据过滤
+SELECT column_name1, column_name2 FROM table_name WHERE column_name1 < 5 AND column_name2 != 'xxx'; --AND子句用例，两个条件需同时满足
+SELECT column_name1, column_name2 FROM table_name WHERE column_name1 IN ('xxx', 'yyy'); --IN操作符指定条件范围
+SELECT column_name1, column_name2 FROM table_name WHERE NOT column_name1 = 5; --NOT子句否定其后所跟的任何条件
+#LIKE操作符和通配符搭配使用搜索特定数据
+SELECT column_name1, column_name2 FROM table_name WHERE column_name1 LIKE ‘%name%'; --'%'通配符表示任何字符出现的任意次数（0,1或多个）
+# '_'通配符匹配单个字符（扩展知识可看MySQL正则表达式的应用）
+SELECT Concat(column_name1, column_name2) FROM table_name; --使用Concat拼接字符
+SELECT RTRIM(column_name1), column_name2 FROM table_name; --RTRIM()函数去掉字符串右边的空格，LTRIM()函数去掉字符串左边的空格
+SELECT Concat(column_name1, column_name2) AS column_title FROM table_name; --AS将Concat()的结果指定别名
+SELECT (column_name1 + column_name2) * column_name3 AS column_title FROM table_name; --进行算术运算
+# 文本处理函数 UPPER(), LENGTH(), LOWER(), SOUNDEX(), RTRIM(), LTRIM()
+SELECT UPPER(column_name1) AS column_upper, LOWER(column_name2) FROM table_name; --函数用例
+SELECT column_name1, column_name2 FROM table_name WHERE SOUNDEX(column_name1) = SOUNDEX('Michael'); --SOUNDEX()函数以发音相似来检索
+SELECT column_name1, column_name2 FROM table_name WHERE YEAR(column_name1) = 2017; --检索column_name1为2017年的数据，相同用法有DAY(), MONTH()
+# 数值处理函数 ABS(), COS(), SIN(), TAN(), SQRT(), EXP(), PI()
+# 聚集函数 AVG(), COUNT(), MAX(), MIN(), SUM()
+SELECT AVG(column_name1) AS column_avg FROM table_name; --计算该列的平均值
+SELECT COUNT(column_name1) AS column_count FROM table_name; --计算该列的行数
+SELECT AVG(DISTINCT column_name1) AS column_avg FROM table_name; --计算该列不同值的平均值
+SELECT column_name1, COUNT(column_name2) AS num_2 FROM table_name GROUP BY colum_name1; --创建分组，GROUP BY子句在WHERE子句之后，ORDER BY子句之前
+SELECT column_name1, COUNT(column_name2) AS num_2 FROM table_name WHERE column_name3 < 100 GROUP BY colum_name1 HAVING COUNT(*) > 2 ORDER BY column_name4;  --HAVING子句用来对分组进行过滤，注意各子句的顺序
+# WHERE子句嵌套子查询的例子，SELECT语句只能查询单个列
+SELECT cust_name, cust_contact 
+FROM Customers 
+WHERE cust_id IN (SELECT cust_id 
+				  FROM Orders 
+				  WHERE order_num IN (SELECT order_num 
+				  					  FROM OrderItems 
+				  					  WHERE prod_id = 'RGAN01'));
+
+# 圆括号中的子查询建立计算字段
+SELECT cust_name, 
+	   cust_state,
+       (SELECT COUNT(*) 
+        FROM Orders 
+        WHERE Orders.cust_id = Customers.cust_id) AS orders
+FROM Customers 
+ORDER BY cust_name;
+# table.column_name 完全限定列名，
+
+# 创建联结（等值联结，内联结）
+SELECT vend_name, prod_name, prod_price 
+FROM Vendors, Products 
+WHERE Vendors.vend_id = Products.vend_id;
+# 等同上个例子
+SELECT vend_name, prod_name, prod_price 
+FROM Vendors INNER JOIN Products 
+ON Vendors.vend_id = Products.vend_id;
+# WHERE子句嵌套子查询的例子可改为
+SELECT cust_name, cust_contact
+FROM Customers, Orders, OrderItems
+WHERE Customers.cust_id = Orders.cust_id 
+ AND Orders.order_num = OrderItems.order_num 
+ AND prod_id = 'RGAN01';
+# 使用别名简写
+SELECT cust_name, cust_contact
+FROM Customers AS C, Orders AS O, OrderItems AS OI
+WHERE C.cust_id = O.cust_id 
+ AND O.order_num = OI.order_num 
+ AND prod_id = 'RGAN01';
+# 使用自联结,查询中需要两次用到同一个表，为避免歧义，使用表别名+
+SELECT c1.cust_id, c1.cust_name, c1.cust_contact
+FROM Customers AS c1, Customers AS c2
+WHERE c1.cust_name = c2.cust_name
+ AND c2.cust_contact = 'Jim Jones';
+# 外联结包括没有关联的行，LEFT关键字指定包括其所有行的左边的表，与之对应RIGHT
+SELECT Customers.cust_id, Orders.order_num
+FROM Customers LEFT OUTER JOIN Orders
+ ON Customers.cust_id = Orders.cust_id;
+# 组合查询的例子,使用UNION来组合两个SELECT语句，使用UNION ALL语句组合时不会自动删除重复行 
+SELECT cust_name, cust_contact, cust_email
+FROM Customers
+WHERE cust_state IN ('IL', 'IN', 'MI')
+UNION
+SELECT cust_name, cust_contact, cust_email
+FROM Customers
+WHERE cust_name = 'Fun4ALL'
+ORDER BY cust_name, cust_contact;
+
+2.2 INSERT语句
+# 插入行（可省略某些列，该列需允许设为NULL或者有默认值）
+# 主键值需不同于表中已有的值
+INSERT INTO Customers(cust_id, 
+					  cust_name, 
+					  cust_address, 
+					  cust_city, 
+					  cust_state, 
+					  cust_zip, 
+					  cust_country) 
+VALUES('1000000008', 
+	   'Toy Land' , 
+	   '123 Any Street', 
+	   'New York', 
+	   'NY', 
+	   '11111', 
+	   'USA');
+# 插入检索出的数据（可插入多行）
+INSERT INTO Customers(cust_id, 
+					  cust_name, 
+					  cust_address, 
+					  cust_city, 
+					  cust_state, 
+					  cust_zip, 
+					  cust_country) 
+VALUES(cust_id, 
+	   cust_name, 
+	   cust_address, 
+	   cust_city, 
+	   cust_state, 
+	   cust_zip, 
+	   cust_country) 
+FROM CustNew;
+# 下面的例子创建一个Copy的表，并将Customers表中的数据复制到新表中
+SELECT * INTO Copy FROM Customers; --可使用子句，可从多个表中插入数据
+2.3 UPDATE 语句
+# SET命令可更新多个值
+UPDATE Customers 
+SET cust_email = 'xxx@example.com', 
+ 	cust_contact = 'Sam Roberts'
+WHERE cust_id = '1000000005';
+2.4 DELETE 语句
+# 删除整行
+DELETE FROM Customers WHERE cust_id IN ['1000000008', '1000000007'];
+
+2.5 创建表
+# 常见数据类型
+char		1~255个字符的定长字符串
+float		单精度浮点数
+double		双精度浮点数
+decimal		未打包的浮点数
+text		大小写不敏感的变长文本
+int			4字节整数
+tinyint		1字节整数
+date		YYYY-MM-DD
+time		HH:MM:SS
+year		YYYY
+date time	YYYY-MM-DD HH:MM:SS
+
+# 允许NULL值的列在插入行时允许不给该列的值，NOT NULL则相反，NULL为默认值
+CREATE TABLE Products 
+(
+	prod_id		CHAR(10) 		NOT NULL, 
+	vend_id 	CHAR(10) 		NOT NULL, 
+	prod_name 	CHAR(254) 		NOT NULL, 
+	prod_pricr 	FLOAT(8,2) 		NOT NULL, 
+	prod_desc 	TEXT(1000) 		NULL
+);
+# 设定默认值 DEFAULT 1, 设定主键PRIMARY KEY, 设定外键REFERENCES, CHECK关键字检查约束
+CREATE TABLE OrderItems 
+(
+	order_num		INT 			NOT NULL	PRIMARY KEY, 
+	order_item 		INT 			NOT NULL	CHECK (order_id > 0), 
+	prod_id 		CHAR(10) 		NOT NULL	REFERENCES Products(prod_id), 
+	quantity 		INT 			NOT NULL	DEFAULT 1, 
+	item_price 		DECIMAL(8,2) 	NOT NULL
+);
+# 使用UNIQUE关键字可定义唯一约束，
+# 添加主键方法2
+ALTER TABLE OrderItems ADD CONSTRAINT PRIMARY KEY (order_num);
+# 添加外键方法2
+ALTER TABLE OrderItems ADD CONSTRAINT FOREIGN KEY (prod_id) REFERENCES Products(prod_id);
+# 添加检查方法2
+ALTER TABLE OrderItems ADD CONSTRAINT CHECK (prod_id > 0);
+# 默认添加时间戳 DEFAULT CURRENT_DATE()
+2.5.2 更新表
+ALTER TABLE Vendors ADD vend_phone CHAR(20); --增加列,并指定数据类型
+ALTER TABLE Vendors DROP vend_phone; --删除列
+2.5.3 删除表
+DROP TABLE table_name;
+2.5.4 重命名表
+RENAME TABLE table_old TO table_new;
+
+3 视图
+# 视图是虚拟的表，视图只包含使用时动态检索数据的查询
+CREATE VIEW view_name; -- 创建视图
+# 创建一个名为ProductCustomers的视图
+CREATE VIEW ProductCustomers AS
+SELECT cust_name, cust_contact, prod_id
+FROM Customers, Orders, OrderItems
+WHERE Customers.cust_id = Orders.cust_id
+ AND OrderItems.order_num = Orders.order_num;
+# 使用此视图
+SELECT cust_name, cust_contact FROM ProductCustomers WHERE prod_id = 'RGAN01';
+DROP VIEW view_name; -- 删除视图
+# 使用视图重新格式化检索出的数据
+CREATE VIEW VendorLocations AS
+SELECT Concat(vend_name, '(', vend_country, ')')  
+	   AS vend_title 
+FROM Vendors;
+# 同理可用视图过滤不需要的数据和计算字段
+
+4 管理事务处理
+# 事务处理用来管理INSERT、UPDATE、DELETE语句
+START TRANSACTION; --开始事务管理
+SAVEPOINT delete1; --创建保留点
+DELETE FROM Customers WHERE cust_id = '1000000006';
+ROLLBACK; --回滚
+ROLLBACK TO delete1; --回滚至保留点delete1
+COMMIT; --提交
+
+# 索引可以提高检索性能，但是索引需占用空间
+CREATE INDEX prod_name_ind ON Products (prod_name); --创建prod_name的索引
