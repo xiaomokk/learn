@@ -1,1 +1,4 @@
-test
+<<<<<<< Updated upstream
+=======
+测试的 合并成功
+>>>>>>> Stashed changes
