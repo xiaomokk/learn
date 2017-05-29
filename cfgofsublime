@@ -1,0 +1,21 @@
+搬运知乎用户man oshape的答案
+https://www.zhihu.com/question/22904994/answer/87527103
+
+配置sublime的python IDE和run current file
+
+安装package和SublimeREPL
+
+在preferences --> Key Bindings 中配置
+[
+{"keys":["f1"],
+"caption": "SublimeREPL: Python",
+"command": "run_existing_window_command", "args":
+{"id": "repl_python",
+"file": "config/Python/Main.sublime-menu"}}
+,
+{"keys":["f2"],
+"caption": "SublimeREPL: Python - RUN current file",
+"command": "run_existing_window_command", "args":
+{"id": "repl_python_run",
+"file": "config/Python/Main.sublime-menu"}}
+]
